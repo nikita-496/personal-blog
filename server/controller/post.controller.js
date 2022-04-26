@@ -2,10 +2,10 @@ const db = require("../db/db");
 
 class PostController {
   async createPost(req, res) {
-    const { tile, content, userId } = req.body;
+    const { title, content, userId } = req.body;
     const newPost = await db.query(
-      `INSERT INTO post (tile, content, user_id) values($1, $2, $3) RETURNING *`,
-      [tile, content, userId]
+      `INSERT INTO post (title, content, user_id) values($1, $2, $3) RETURNING *`,
+      [title, content, userId]
     );
     res.json(newPost.rows[0]);
   }
@@ -19,10 +19,10 @@ class PostController {
     res.json(posts.rows[0]);
   }
   async updatePost(req, res) {
-    const { tile, content, user_id, id } = req.body;
+    const { title, content, user_id, id } = req.body;
     const post = await db.query(
-      "UPDATE post set tile = $1, content = $2, user_id = $3 where id = $4 RETURNING *",
-      [tile, content, user_id, id]
+      "UPDATE post set title = $1, content = $2, user_id = $3 where id = $4 RETURNING *",
+      [title, content, user_id, id]
     );
     res.json(post.rows[0]);
   }
