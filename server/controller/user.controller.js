@@ -1,4 +1,3 @@
-const { query } = require("express");
 const db = require("../db/db");
 class UserController {
   async createUser(req, res) {
@@ -29,8 +28,8 @@ class UserController {
   }
   async deleteUser(req, res) {
     const id = req.params.id;
-    const users = await db.query("DELETE FROM person where id = $1", [id]);
-    res.json(users.rows[0]);
+    const user = await db.query("DELETE FROM person where id = $1", [id]);
+    res.json(user.rows[0]);
   }
 }
 
