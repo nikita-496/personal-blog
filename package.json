@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev:server": "node ./server/index.js",
+    "dev:server": "nodemon node ./server/index.js",
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
@@ -14,10 +14,15 @@
     "core-js": "^3.19.3",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.0",
+    "express": "^4.18.0",
     "nuxt": "^2.15.8",
+    "pg": "^8.7.3",
     "vue": "^2.6.14",
     "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.6.14",
     "webpack": "^4.46.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
