@@ -1,15 +1,15 @@
 const express = require("express");
-const userRouter = require("./routes/user.routes");
-const postRouter = require("./routes/post.routes");
 
 const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
 
+//routes
 app.use(express.json());
-app.use("/api/v1", userRouter);
-app.use("/api/v1", postRouter);
+app.use("/api/v1", require("./routes/user.routes"));
+app.use("/api/v1", require("./routes/post.routes"));
+app.use("/api/v1", require("./routes/register.routes"));
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
