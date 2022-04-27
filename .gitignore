@@ -92,5 +92,5 @@ sw.*
 # Hide 
 package-lock.json
 store
-server/config
+server/config/password.js
 server/db/db.sql
