@@ -50,6 +50,12 @@ class PersonTableExplorer {
       [this.columnValues, this.id]
     );
   }
+
+  async getUserByToken() {
+    return await db.query(`SELECT * FROM person WHERE refresh_token LIKE $1`, [
+      this.columnValues,
+    ]);
+  }
 }
 
 module.exports = PersonTableExplorer;
