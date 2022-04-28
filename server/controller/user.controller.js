@@ -6,6 +6,7 @@ class UserController {
       `INSERT INTO person (name, surname, login, password) values($1, $2, $3, $4) RETURNING *`,
       [name, surname, login, password]
     );
+    return newPerson.rows[0];
   }
   async getUsers(req, res) {
     const users = await db.query("SELECT * FROM person");
