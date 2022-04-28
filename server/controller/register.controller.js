@@ -1,5 +1,5 @@
-const db = require("../db/db");
 const bcrypt = require("bcrypt");
+const { selectLogin } = require("../utils/databaseAccess");
 const UserController = require("./user.controller");
 
 const handleNewUser = async (req, res) => {
@@ -10,12 +10,10 @@ const handleNewUser = async (req, res) => {
     });
   }
   // проверить наличие дублирования логина пользователя в бд
-  const queryResult = await db.query("SELECT login FROM person");
-
+  const queryResult = await selectLogin();
   if (countDuplicates()) {
     return res.sendStatus(409); //Conflict
   }
-
   try {
     //шифрование пароля
     const hashedPwd = await bcrypt.hash(password, 10);
