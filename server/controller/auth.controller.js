@@ -14,6 +14,13 @@ const handleLogin = async (req, res) => {
   const queryResult = await authorizer.selectLogin();
   const foundLogin = authCheck();
 
+  if (!foundLogin) {
+    //Unauthorized
+    return res
+      .status(401)
+      .json({ message: "Пользователя с такими данными не существует" });
+  }
+
   if (await validatePwd()) {
     const accessToken = createAccessJWTs();
     const refreshToken = createRefreshJWTs();
@@ -62,7 +69,7 @@ const handleLogin = async (req, res) => {
       (person) => person.login === login
     );
     if (!foundLogin) {
-      return res.sendStatus(401); //Unauthorized
+      return;
     }
     return foundLogin.login;
   }

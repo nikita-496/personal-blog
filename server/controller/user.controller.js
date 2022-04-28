@@ -2,7 +2,6 @@ const db = require("../db/db");
 class UserController {
   async createUser(userData) {
     const { name, surname, login, password, email } = userData;
-    console.log(userData);
     const newPerson = await db.query(
       `INSERT INTO person (name, surname, login, password, email) values($1, $2, $3, $4, $5) RETURNING *`,
       [name, surname, login, password, email]
