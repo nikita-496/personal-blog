@@ -56,6 +56,12 @@ class PersonTableExplorer {
       this.columnValues,
     ]);
   }
+  async deleteToken() {
+    await db.query(
+      "UPDATE person set refresh_token = '' WHERE id = $1 RETURNING *",
+      [this.id]
+    );
+  }
 }
 
 module.exports = PersonTableExplorer;
