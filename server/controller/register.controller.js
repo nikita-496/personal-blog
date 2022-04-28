@@ -1,16 +1,19 @@
 const bcrypt = require("bcrypt");
-const { selectLogin } = require("../utils/databaseAccess");
+const PersonTableExplorer = require("../utils/PersonTableExplorer");
 const UserController = require("./user.controller");
 
 const handleNewUser = async (req, res) => {
-  const { name, surname, login, password } = req.body[0];
-  if (!name || !login || !password) {
+  const { name, surname, login, password, email } = req.body[0];
+  if (!name || !login || !password || !email) {
     return res.status(400).json({
-      message: "Имя пользователя, логин и пароль являются обязательными",
+      message:
+        "Имя пользователя, логин, пароль и  email являются обязательными",
     });
   }
   // проверить наличие дублирования логина пользователя в бд
-  const queryResult = await selectLogin();
+  const recorder = new PersonTableExplorer();
+  const queryResult = await recorder.selectLogin();
+  console.log(queryResult);
   if (countDuplicates()) {
     return res.sendStatus(409); //Conflict
   }
@@ -20,7 +23,7 @@ const handleNewUser = async (req, res) => {
     //создание и запись нового пользователя
     userCreation();
     function userCreation() {
-      const newUser = { name, surname, login, password: hashedPwd };
+      const newUser = { name, surname, login, password: hashedPwd, email };
       const result = UserController.createUser(newUser).then((response) => {
         res.status(201).json(response);
       });
