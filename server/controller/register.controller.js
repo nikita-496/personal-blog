@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const PersonTableExplorer = require("../utils/PersonTableExplorer");
+const UserRolesTableExplorer = require("../utils/UserRolesTableExplorer");
 const UserController = require("./user.controller");
 
 const handleNewUser = async (req, res) => {
@@ -22,11 +23,17 @@ const handleNewUser = async (req, res) => {
     const hashedPwd = await bcrypt.hash(password, 10);
     //создание и запись нового пользователя
     userCreation();
-    function userCreation() {
+    async function userCreation() {
       const newUser = { name, surname, login, password: hashedPwd, email };
-      const result = UserController.createUser(newUser).then((response) => {
-        res.status(201).json(response);
-      });
+      const registeredUser = await UserController.createUser(newUser).then(
+        (response) => {
+          res.status(201).json(response);
+          return response;
+        }
+      );
+      const userRolesExplorer = new UserRolesTableExplorer();
+      userRolesExplorer.targetUserId = registeredUser.id;
+      const userRole = await userRolesExplorer.createUserRole();
     }
   } catch (err) {
     res.status(500).json({ message: err.message });

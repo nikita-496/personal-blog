@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const defineUserRoles = require("../utils/defineUserRoles");
 const PersonTableExplorer = require("../utils/PersonTableExplorer");
 
 require("dotenv").config();
@@ -22,6 +23,7 @@ const handleLogin = async (req, res) => {
   }
 
   if (await validatePwd()) {
+    const roles = await defineUserRoles(foundLogin);
     const accessToken = createAccessJWTs();
     const refreshToken = createRefreshJWTs();
     //Сохранение значения refreshToken для пользователя, прошедшего аутентификацию
@@ -35,7 +37,12 @@ const handleLogin = async (req, res) => {
 
     function createAccessJWTs() {
       const accessToken = jwt.sign(
-        { login: foundLogin },
+        {
+          UserInfo: {
+            login: foundLogin,
+            roles,
+          },
+        },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "30s" }
       );

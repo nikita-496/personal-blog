@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const PersonTableExplorer = require("../utils/PersonTableExplorer");
+const defineUserRoles = require("../utils/defineUserRoles");
 require("dotenv").config();
 
 const handleRefreshToken = async (req, res) => {
@@ -28,12 +29,18 @@ const handleRefreshToken = async (req, res) => {
     jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
-      (err, decoded) => {
+      async (err, decoded) => {
         if (err || foundUser.login !== decoded.login) {
           return res.sendStatus(403);
         }
+        const roles = await defineUserRoles(foundUser.login);
         const accessToken = jwt.sign(
-          { login: decoded.login },
+          {
+            UserInfo: {
+              login: decoded.login,
+              roles,
+            },
+          },
           process.env.ACCESS_TOKEN_SECRET,
           { expiresIn: "30s" }
         );

@@ -12,10 +12,4 @@ router
   .get(UserController.getUser)
   .delete(UserController.deleteUser);
 
-/*router.post("/user", UserController.createUser);
-router.get("/user", UserController.getUsers);
-router.get("/user/:id", UserController.getUser);
-router.put("/user", UserController.updateUser);
-router.delete("/user/:id", UserController.deleteUser);*/
-
 module.exports = router;
