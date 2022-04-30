@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const PersonTableExplorer = require("../utils/PersonTableExplorer");
+const PersonTableExplorer = require("../utils/db_interection/PersonTableExplorer");
 const defineUserRoles = require("../utils/defineUserRoles");
 require("dotenv").config();
 

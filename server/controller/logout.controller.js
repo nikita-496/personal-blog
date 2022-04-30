@@ -1,4 +1,4 @@
-const PersonTableExplorer = require("../utils/PersonTableExplorer");
+const PersonTableExplorer = require("../utils/db_interection/PersonTableExplorer");
 
 const handleLogout = async (req, res) => {
   const cookies = req.cookies;

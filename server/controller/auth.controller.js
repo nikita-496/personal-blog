@@ -1,12 +1,12 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const defineUserRoles = require("../utils/defineUserRoles");
-const PersonTableExplorer = require("../utils/PersonTableExplorer");
+const PersonTableExplorer = require("../utils/db_interection/PersonTableExplorer");
 
 require("dotenv").config();
 
 const handleLogin = async (req, res) => {
-  const { login, password } = req.body[0];
+  const { login, password } = req.body;
   if (!login || !password) {
     return res.status(400).json({ message: "Логин и пароль обязательны" });
   }
@@ -65,6 +65,9 @@ const handleLogin = async (req, res) => {
       authorizer.columnValues = refreshToken;
       await authorizer.writeToken();
     }
+
+    //Когда поьзователю присвоен токен и он аворизовался,
+    //отправить запрсос на получние контена профиля пользователя
   } else {
     return res
       .status(401)

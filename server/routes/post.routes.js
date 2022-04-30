@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const PostController = require("../controller/post.controller");
 const verifyRoles = require("../middleware/verifyRoles");
-const RoleTableExplorer = require("../utils/RoleTableExplorer");
+const RoleTableExplorer = require("../utils/db_interection/RoleTableExplorer");
 
 let admin, editor, user;
 getRoles().then((roles) => {

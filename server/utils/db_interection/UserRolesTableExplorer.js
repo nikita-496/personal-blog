@@ -1,4 +1,4 @@
-const db = require("../db/db");
+const db = require("../../db/db");
 
 class UserRolesTableExplorer {
   //Ключ на который ссылается внешний ключ данной таблицы

@@ -1,6 +1,6 @@
-const PersonTableExplorer = require("./PersonTableExplorer");
-const RoleTableExplorer = require("./RoleTableExplorer");
-const UserRolesTableExplorer = require("./UserRolesTableExplorer");
+const PersonTableExplorer = require("./db_interection/PersonTableExplorer");
+const RoleTableExplorer = require("./db_interection/RoleTableExplorer");
+const UserRolesTableExplorer = require("./db_interection/UserRolesTableExplorer");
 
 async function defineUserRoles(foundLogin) {
   let roles = [];

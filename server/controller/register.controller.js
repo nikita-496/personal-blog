@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
-const PersonTableExplorer = require("../utils/PersonTableExplorer");
-const UserRolesTableExplorer = require("../utils/UserRolesTableExplorer");
+const PersonTableExplorer = require("../utils/db_interection/PersonTableExplorer");
+const ProfilTableExplorer = require("../utils/db_interection/ProfileTableExplorer");
+const UserRolesTableExplorer = require("../utils/db_interection/UserRolesTableExplorer");
 const UserController = require("./user.controller");
 
 const handleNewUser = async (req, res) => {
@@ -14,7 +15,6 @@ const handleNewUser = async (req, res) => {
   // проверить наличие дублирования логина пользователя в бд
   const recorder = new PersonTableExplorer();
   const queryResult = await recorder.selectLogin();
-  console.log(queryResult);
   if (countDuplicates()) {
     return res.sendStatus(409); //Conflict
   }
@@ -32,8 +32,18 @@ const handleNewUser = async (req, res) => {
         }
       );
       const userRolesExplorer = new UserRolesTableExplorer();
+      const userProfileExplorer = new ProfilTableExplorer();
       userRolesExplorer.targetUserId = registeredUser.id;
+      //Присвоить роль
       const userRole = await userRolesExplorer.createUserRole();
+      //Присвоить профиль
+      await userProfileExplorer.createProfile();
+      const userProfile = await userProfileExplorer.getLastProfile();
+      console.log(userProfile);
+      const personExplorer = new PersonTableExplorer();
+      personExplorer.id = registeredUser.id;
+      personExplorer.foreignId = userProfile.id;
+      const personWithProfile = await personExplorer.writeForeignId();
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
