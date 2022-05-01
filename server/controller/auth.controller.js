@@ -65,9 +65,6 @@ const handleLogin = async (req, res) => {
       authorizer.columnValues = refreshToken;
       await authorizer.writeToken();
     }
-
-    //Когда поьзователю присвоен токен и он аворизовался,
-    //отправить запрсос на получние контена профиля пользователя
   } else {
     return res
       .status(401)

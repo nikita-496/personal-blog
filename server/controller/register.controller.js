@@ -39,11 +39,10 @@ const handleNewUser = async (req, res) => {
       //Присвоить профиль
       await userProfileExplorer.createProfile();
       const userProfile = await userProfileExplorer.getLastProfile();
-      console.log(userProfile);
-      const personExplorer = new PersonTableExplorer();
-      personExplorer.id = registeredUser.id;
-      personExplorer.foreignId = userProfile.id;
-      const personWithProfile = await personExplorer.writeForeignId();
+      const profileExplorer = new ProfilTableExplorer();
+      profileExplorer.id = userProfile.id;
+      profileExplorer.foreignId = registeredUser.id;
+      const personWithProfile = await profileExplorer.writeForeignId();
     }
   } catch (err) {
     res.status(500).json({ message: err.message });

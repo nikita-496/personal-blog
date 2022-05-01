@@ -4,7 +4,6 @@ class PersonTableExplorer {
   _loginForSelect = null;
   _columnValues = null;
   _id = null;
-  _foreignId = null;
 
   get loginForSelect() {
     return this._loginForSelect;
@@ -25,14 +24,6 @@ class PersonTableExplorer {
   }
   set id(val) {
     return (this._id = val);
-  }
-
-  get foreignId() {
-    return this._foreignId;
-  }
-
-  set foreignId(val) {
-    return (this._foreignId = val);
   }
 
   async selectLogin() {
@@ -69,21 +60,23 @@ class PersonTableExplorer {
     );
   }
 
-  async joinWithUserProfile() {
-    return await db.query(
+  async join() {
+    const profile = await db.query(
       `SELECT person.id, person.name, person.surname, person.login, person.email, profile.avatar
        FROM person 
-       INNER JOIN profile ON profile.id = person.profile_id WHERE login = $1
+       INNER JOIN profile ON profile.user_id = person.id WHERE login = $1
       `,
       [this.loginForSelect]
     );
-  }
-
-  async writeForeignId() {
-    await db.query(
-      "UPDATE person SET profile_id = $1 WHERE id = $2 RETURNING *",
-      [this.foreignId, this.id]
+    const userRoles = await db.query(
+      `SELECT user_roles.role_id
+       FROM person 
+       INNER JOIN user_roles ON user_roles.user_id = person.id WHERE login = $1
+      `,
+      [this.loginForSelect]
     );
+    const roles = userRoles.rows.map((role) => role.role_id);
+    return [{ ...profile.rows[0], roles }];
   }
 }
 
