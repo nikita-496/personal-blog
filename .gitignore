@@ -91,6 +91,6 @@ sw.*
 
 # Hide 
 package-lock.json
-store
+client/store/README.md
 server/config/password.js
 server/db/db.sql
