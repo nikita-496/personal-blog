@@ -1,4 +1,4 @@
-const { postJSON, API } = require("./http");
+import { postJSON, API } from "./http";
 
 class SignService {
   signUp(userInfo) {
@@ -8,9 +8,9 @@ class SignService {
     return await postJSON(API.auth, userInfo);
   }
 
-  async renderProfile(login) {
+  async getProfile(login) {
     return await postJSON(API.profile, login);
   }
 }
 
-module.exports = SignService;
+export default new SignService();

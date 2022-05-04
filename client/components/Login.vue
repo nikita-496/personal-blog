@@ -3,32 +3,42 @@
     <h1 class="form_name">Войти</h1>
     <div class="form_field">
       <label for="login">Логин</label>
-      <input id="login" v-model="userInfo.login" />
+      <input id="login" v-model="user.login" />
       <label for="password">Пароль</label>
-      <input id="password" v-model="userInfo.password" />
+      <input id="password" v-model="user.password" />
     </div>
-    <button @click="processForm">Войти</button>
+    <button @click="handleLogin">Войти</button>
   </form>
 </template>
 
 <script>
-import SignService from "../service/SignService";
+import { mapActions } from "vuex";
+import User from "../models/User";
 export default {
   name: "login",
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.isLoggedIn;
+    },
+  },
+  created() {
+    if (this.loggedIn) {
+      this.$router.push(`/profile/${this.userInfo.login}`);
+    }
+  },
   data() {
     return {
-      userInfo: {
-        login: "",
-        password: "",
-      },
+      user: new User(undefined, undefined, "", "", undefined),
     };
   },
   methods: {
-    async processForm() {
-      const handler = new SignService();
-      await handler.signIn(this.userInfo).then(() => {
-        this.$router.push(`/profile/${this.userInfo.login}`);
-      });
+    ...mapActions({
+      login: "auth/login",
+    }),
+    async handleLogin() {
+      await this.login(this.user).then(
+        this.$router.push(`/profile/${this.user.login}`)
+      );
     },
   },
 };
