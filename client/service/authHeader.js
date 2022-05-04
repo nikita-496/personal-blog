@@ -1,4 +1,4 @@
-import UserStorage from "../persistent/userStorage";
+import UserStorage from "../persistent/User";
 
 export default function authHeader() {
   const user = UserStorage.getUser();

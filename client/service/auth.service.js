@@ -1,5 +1,5 @@
-const UserStorage = require("../persistent/userStorage");
-const { postJSON, API } = require("./http");
+import UserStorage from "../persistent/User";
+import { postJSON, API } from "./http";
 
 class AuthService {
   login(user) {
@@ -10,6 +10,7 @@ class AuthService {
       if (res.data.accessToken) {
         UserStorage.setUser(res.data);
       }
+      return res.data;
     });
   }
 
@@ -28,4 +29,4 @@ class AuthService {
   }
 }
 
-module.exports = new AuthService();
+export default new AuthService();
