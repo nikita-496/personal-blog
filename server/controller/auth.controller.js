@@ -33,7 +33,11 @@ const handleLogin = async (req, res) => {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
-    res.json({ accessToken });
+    authorizer.loginForSelect = login;
+    const queryUserResult = await authorizer.join();
+    console.log(queryUserResult);
+    queryUserResult[0].accessToken = accessToken;
+    res.json(queryUserResult);
 
     function createAccessJWTs() {
       const accessToken = jwt.sign(

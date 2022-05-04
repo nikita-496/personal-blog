@@ -25,7 +25,6 @@ app.use(cookieParser());
 app.use("/api/v1/register", require("./routes/register.routes"));
 app.use("/api/v1/auth", require("./routes/auth.routes"));
 app.use("/api/v1/refresh", require("./routes/refresh.routes"));
-app.use("/api/v1/profile", require("./routes/userProfile.routes"));
 app.use("/api/v1/logout", require("./routes/logout.routes"));
 app.use("/api/v1/user", require("./routes/user.routes"));
 
