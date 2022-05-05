@@ -1,9 +1,11 @@
 import UserStorage from "../persistent/User";
+import TokenStorage from "../persistent/Token";
 
 export default function authHeader() {
-  const user = UserStorage.getVuexUser().auth.user;
-  if (user && user.accessToken) {
-    return { Authorization: "Bearer " + user.accessToken };
+  const user = UserStorage.getUser();
+  const token = TokenStorage.getToken();
+  if (user && token) {
+    return { Authorization: "Bearer " + token };
   } else {
     return {};
   }

@@ -7,7 +7,11 @@ export const state = () => ({
 
 const getters = {
   getLoggedIn: (state) => state.isLoggedIn,
-  getUserId: (state) => state.user.id,
+  getUserId: (state) => {
+    if (state.user) {
+      return state.user.id;
+    }
+  },
   getLogin: (state) => {
     if (state.user) {
       return state.user.login;

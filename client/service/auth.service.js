@@ -1,4 +1,5 @@
 import UserStorage from "../persistent/User";
+import TokenStorage from "../persistent/Token";
 import { postJSON, API } from "./http";
 
 class AuthService {
@@ -7,8 +8,12 @@ class AuthService {
       login: user.login,
       password: user.password,
     }).then((res) => {
-      if (res.data.accessToken) {
-        UserStorage.setUser(res.data);
+      const data = res.data[0];
+      if (data.accessToken) {
+        const userData = { ...data };
+        delete userData.accessToken;
+        UserStorage.setUser(userData);
+        TokenStorage.setToken(data.accessToken);
       }
       return res.data;
     });
