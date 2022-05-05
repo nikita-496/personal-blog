@@ -1,21 +1,25 @@
-import UserStorage from "../persistent/User";
 import AuthService from "../service/auth.service";
 
-const user = UserStorage.getUser();
-const initialState = user
-  ? { isLoggedIn: true, user }
-  : { isLoggedIn: false, user: null };
+export const state = () => ({
+  isLoggedIn: false,
+  user: null,
+});
 
 const getters = {
-  getLogin: (state) => state.user,
   getLoggedIn: (state) => state.isLoggedIn,
+  getUserId: (state) => state.user.id,
+  getLogin: (state) => {
+    if (state.user) {
+      return state.user.login;
+    }
+  },
 };
 
 const actions = {
   login({ commit }, user) {
     return AuthService.login(user).then(
       (res) => {
-        commit("loginSuccess", res);
+        commit("loginSuccess", res[0]);
         return Promise.resolve(res);
       },
       (err) => {
@@ -64,7 +68,7 @@ const mutations = {
 };
 
 export default {
-  state: initialState,
+  state,
   getters,
   actions,
   mutations,

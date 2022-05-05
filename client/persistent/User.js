@@ -4,6 +4,11 @@ class UserStorage {
       return JSON.parse(localStorage.getItem("user"));
     }
   }
+  getVuexUser() {
+    if (typeof window != "undefined") {
+      return JSON.parse(localStorage.getItem("vuex"));
+    }
+  }
   setUser(val) {
     if (typeof window != "undefined") {
       localStorage.setItem("user", JSON.stringify(val));

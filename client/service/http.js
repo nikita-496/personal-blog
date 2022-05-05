@@ -19,12 +19,13 @@ export const api = {
   register: url("/register"),
   auth: url("/auth"),
   profile: url("/profile"),
+  post: url("/post"),
 };
 
 const instance = axios.create(axiosConfig);
 
 export const getJSON = async (url) => await instance.get(url);
 
-export const postJSON = async (url, data) =>
-  await instance.post(url, data ? JSON.stringify(data) : null);
+export const postJSON = async (url, data, config) =>
+  await instance.post(url, data ? JSON.stringify(data) : null, config);
 export { api as API };
