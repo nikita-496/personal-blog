@@ -45,6 +45,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     "@nuxtjs/axios",
     "@nuxtjs/proxy",
+    "vue2-editor/nuxt",
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
