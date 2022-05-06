@@ -1,20 +1,22 @@
+import TokenStorage from "../persistent/Token";
 import AuthService from "../service/auth.service";
+import { API, getJSON } from "../service/http";
 
-export const state = () => ({
+const state = () => ({
   isLoggedIn: false,
   user: null,
 });
 
 const getters = {
   getLoggedIn: (state) => state.isLoggedIn,
-  getUserId: (state) => {
-    if (state.user) {
-      return state.user.id;
-    }
-  },
   getLogin: (state) => {
     if (state.user) {
       return state.user.login;
+    }
+  },
+  getRoles: (state) => {
+    if (state.user) {
+      return state.user.roles;
     }
   },
 };
@@ -36,7 +38,15 @@ const actions = {
     AuthService.logout();
     commit("logout");
   },
-  register({ commit }, user) {
+  async checkAuthUser({ commit }) {
+    const accessToken = TokenStorage.getToken();
+    commit("checkAuthUser", accessToken);
+  },
+  async setUser({ commit }, userId) {
+    const user = await getJSON(API.user + userId);
+    commit("setUser", user.data[0]);
+  },
+  /*register({ commit }, user) {
     return AuthService.register(user).then(
       (res) => {
         commit("registerSuccess");
@@ -47,13 +57,14 @@ const actions = {
         return Promise.reject(err);
       }
     );
-  },
+  },*/
 };
 
 const mutations = {
   loginSuccess(state, user) {
     state.isLoggedIn = true;
     state.user = user;
+    TokenStorage.setRefreshTokenExpiresIn(Date.now() + 1209600000); // время жизни токена в мс
   },
   loginFailure(state) {
     state.isLoggedIn = false;
@@ -63,15 +74,22 @@ const mutations = {
     state.isLoggedIn = false;
     state.user = null;
   },
-  registerSuccess(state) {
+  checkAuthUser(state, accessToken) {
+    accessToken ? (state.isLoggedIn = true) : (state.isLoggedIn = false);
+  },
+  setUser(state, user) {
+    state.user = user;
+  },
+  /*registerSuccess(state) {
     state.isLoggedIn = false;
   },
   registerFailure(state) {
     state.isLoggedIn = false;
-  },
+  },*/
 };
 
 export default {
+  namespaced: true,
   state,
   getters,
   actions,
