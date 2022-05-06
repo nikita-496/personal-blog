@@ -3,7 +3,7 @@ import TokenStorage from "../persistent/Token";
 
 export default function authHeader() {
   const user = UserStorage.getUser();
-  const token = TokenStorage.getToken();
+  const token = TokenStorage.getToken().token;
   if (user && token) {
     return { Authorization: "Bearer " + token };
   } else {

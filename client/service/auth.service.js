@@ -1,6 +1,6 @@
 import UserStorage from "../persistent/User";
 import TokenStorage from "../persistent/Token";
-import { postJSON, API } from "./http";
+import { postJSON, API, logOut } from "./http";
 
 class AuthService {
   login(user) {
@@ -10,17 +10,18 @@ class AuthService {
     }).then((res) => {
       const data = res.data[0];
       if (data.accessToken) {
-        const userData = { ...data };
-        delete userData.accessToken;
-        UserStorage.setUser(userData);
-        TokenStorage.setToken(data.accessToken);
+        UserStorage.setUser({ id: data.id });
+        TokenStorage.setToken({ token: data.accessToken });
       }
       return res.data;
     });
   }
 
-  logout() {
+  async logout() {
     UserStorage.removeUser();
+    TokenStorage.removeToken();
+    TokenStorage.removeRefreshTokenExpiresIn();
+    await logOut(API.logout);
   }
 
   register(user) {
