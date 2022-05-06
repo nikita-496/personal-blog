@@ -1,8 +1,8 @@
-import authHeader from "./authHeader";
-import { postJSON, API } from "./http";
+import { API } from "./http";
+import fetchWithAuth from "./refreshToken.service";
 
 export default class PostBlogService {
-  send(postData) {
-    return postJSON(API.post, postData, { headers: authHeader() });
+  async send(postData) {
+    await fetchWithAuth(API.post, postData, "POST");
   }
 }
