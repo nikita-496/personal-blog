@@ -14,8 +14,22 @@ class UserController {
   }
   async getUser(req, res) {
     const id = req.params.id;
-    const users = await db.query("SELECT * FROM person WHERE id = $1", [id]);
-    res.json(users.rows[0]);
+    const profile = await db.query(
+      `SELECT person.name, person.surname, person.login, person.email, profile.avatar
+       FROM person 
+       INNER JOIN profile ON profile.user_id = person.id WHERE person.id = $1
+      `,
+      [id]
+    );
+    const userRoles = await db.query(
+      `SELECT user_roles.role_id
+       FROM person 
+       INNER JOIN user_roles ON user_roles.user_id = person.id WHERE person.id = $1
+      `,
+      [id]
+    );
+    const roles = userRoles.rows.map((role) => role.role_id);
+    return res.json([{ ...profile.rows[0], roles }]);
   }
   async updateUser(req, res) {
     const { id, name, surname, login, password, email } = req.body[0];

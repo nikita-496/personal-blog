@@ -35,7 +35,6 @@ const handleLogin = async (req, res) => {
     });
     authorizer.loginForSelect = login;
     const queryUserResult = await authorizer.join();
-    console.log(queryUserResult);
     queryUserResult[0].accessToken = accessToken;
     res.json(queryUserResult);
 
@@ -48,7 +47,7 @@ const handleLogin = async (req, res) => {
           },
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "30s" }
+        { expiresIn: "2h" }
       );
       return accessToken;
     }
@@ -56,7 +55,7 @@ const handleLogin = async (req, res) => {
       const refreshToken = jwt.sign(
         { login: foundLogin },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: "1d" }
+        { expiresIn: "2w" }
       );
       return refreshToken;
     }

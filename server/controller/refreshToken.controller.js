@@ -9,7 +9,8 @@ const handleRefreshToken = async (req, res) => {
     return res.sendStatus(401);
   }
   const refreshToken = cookies.jwt;
-  const foundUser = await difineUser();
+  const foundUser = await defineUser();
+
   if (!foundUser) {
     return res.sendStatus(403); //Forbidden
   }
@@ -17,14 +18,13 @@ const handleRefreshToken = async (req, res) => {
   //валедировать jwt
   verifyJWT();
 
-  async function difineUser() {
+  async function defineUser() {
     const refresher = new PersonTableExplorer();
     refresher.columnValues = refreshToken;
     const queryResult = await refresher.getUserByToken();
     const foundUser = queryResult.rows[0];
     return foundUser;
   }
-
   function verifyJWT() {
     jwt.verify(
       refreshToken,
@@ -42,7 +42,7 @@ const handleRefreshToken = async (req, res) => {
             },
           },
           process.env.ACCESS_TOKEN_SECRET,
-          { expiresIn: "30s" }
+          { expiresIn: "2h" }
         );
         res.json({ accessToken });
       }
