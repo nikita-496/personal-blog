@@ -21,11 +21,6 @@ export default {
       return this.$store.state.auth.isLoggedIn;
     },
   },
-  created() {
-    if (this.loggedIn) {
-      this.$router.push(`/profile/${this.userInfo.login}`);
-    }
-  },
   data() {
     return {
       user: new User(undefined, undefined, "", "", undefined),
@@ -36,9 +31,11 @@ export default {
       login: "auth/login",
     }),
     async handleLogin() {
-      await this.login(this.user).then(
-        this.$router.push(`/profile/${this.user.login}`)
-      );
+      await this.login(this.user).then((res) => {
+        if (res) {
+          this.$router.push(`/profile/${this.user.login}`);
+        }
+      });
     },
   },
 };
