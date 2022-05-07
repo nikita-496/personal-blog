@@ -14,6 +14,7 @@
 import { mapActions } from "vuex";
 import PostBlogService from "../service/PostBlogService";
 import UserStorage from "../persistent/User";
+import UserService from "../service/user.service";
 export default {
   data() {
     return {
@@ -22,8 +23,26 @@ export default {
     };
   },
   mounted() {
+    if (!UserStorage.getUser()) {
+      console.log(UserStorage.getUser());
+      this.$router.push("sign/in");
+      return;
+    }
+    UserService.getEditor().then(
+      (res) => {
+        return;
+      },
+      (err) => {
+        if (err.response.status === 401) {
+          this.$router.push("error/401");
+        }
+        this.$router.push("error/500");
+      }
+    );
     this.checkAuthUser();
-    this.setUser(UserStorage.getUser().id);
+    if (UserStorage.getUser()) {
+      this.setUser(UserStorage.getUser().id);
+    }
   },
   methods: {
     ...mapActions({

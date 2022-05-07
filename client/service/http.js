@@ -29,16 +29,16 @@ export const api = {
 const instance = axios.create(axiosConfig);
 
 function getParent() {
-  this.get = async function (url) {
-    return await instance.get(url);
+  this.get = async function (url, config) {
+    return await instance.get(url, config);
   };
 }
 function GetJSON() {
   getParent.call(this);
 }
 
-export function getJSON(url) {
-  return new GetJSON().get(url);
+export function getJSON(url, config) {
+  return new GetJSON().get(url, config);
 }
 
 export function logOut(url) {
