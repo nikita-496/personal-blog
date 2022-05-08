@@ -22,12 +22,12 @@ function setRouter(roles) {
   router
     .route("/")
     .post(verifyRoles(roles.admin, roles.editor), PostController.createPost)
-    .get(verifyRoles(roles.admin, roles.editor), PostController.getPosts)
+    .get(PostController.getPosts)
     .put(verifyRoles(roles.admin, roles.editor), PostController.updatePost);
 
   router
     .route("/:id")
-    .get(verifyRoles(roles.admin, roles.editor), PostController.getPosts)
+    .get(PostController.getPost)
     .delete(verifyRoles(roles.admin), PostController.deletePost);
 }
 

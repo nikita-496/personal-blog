@@ -14,9 +14,9 @@ class PostController {
     res.json(posts.rows);
   }
   async getPost(req, res) {
-    const id = req.query.id;
-    const posts = await db.query("SELECT * FROM post  where id = $1", [id]);
-    res.json(posts.rows[0]);
+    const id = req.params.id;
+    const post = await db.query("SELECT * FROM post  where id = $1", [id]);
+    res.json(post.rows);
   }
   async updatePost(req, res) {
     const { title, content, user_id, id } = req.body;

@@ -28,7 +28,7 @@ app.use("/api/v1/refresh", require("./routes/refresh.routes"));
 app.use("/api/v1/logout", require("./routes/logout.routes"));
 app.use("/api/v1/user", require("./routes/user.routes"));
 
-app.use(verifyJWT);
+//app.use(verifyJWT);
 app.use("/api/v1/post", require("./routes/post.routes"));
 
 const PORT = process.env.PORT || 4000;

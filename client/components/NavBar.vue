@@ -1,7 +1,7 @@
 <template>
-  <div id="nav">
+  <header id="nav">
     <NuxtLink to="/">Home</NuxtLink>
-    <NuxtLink to="/posts">Posts</NuxtLink>
+    <NuxtLink to="/article/all">Articles</NuxtLink>
     <span v-if="loggedIn">
       <a href="/" @click="logout">Logout</a>
     </span>
@@ -9,7 +9,7 @@
       <NuxtLink to="/sign/up">Register</NuxtLink>
       <NuxtLink to="/sign/in">Login</NuxtLink>
     </span>
-  </div>
+  </header>
 </template>
 
 <script>
