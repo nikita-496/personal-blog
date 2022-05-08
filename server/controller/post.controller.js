@@ -9,10 +9,10 @@ class PostController {
     );
     res.json(newPost.rows[0]);
   }
-  async getPosts(req, res) {
-    const posts = await db.query("SELECT * FROM post");
-    res.json(posts.rows);
+  async getPosts() {
+    return await db.query("SELECT * FROM post");
   }
+
   async getPost(req, res) {
     const id = req.params.id;
     const post = await db.query("SELECT * FROM post  where id = $1", [id]);
