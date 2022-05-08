@@ -29,7 +29,7 @@ const actions = {
         return Promise.resolve(res);
       },
       (err) => {
-        commit("loginFailure");
+        commit("failure");
         return Promise.reject(err);
       }
     );
@@ -46,18 +46,18 @@ const actions = {
     const user = await getJSON(API.user + userId);
     commit("setUser", user.data[0]);
   },
-  /*register({ commit }, user) {
+  register({ commit }, user) {
     return AuthService.register(user).then(
       (res) => {
         commit("registerSuccess");
         return Promise.resolve(res);
       },
       (err) => {
-        commit("registerFailure");
+        commit("failure");
         return Promise.reject(err);
       }
     );
-  },*/
+  },
 };
 
 const mutations = {
@@ -65,10 +65,6 @@ const mutations = {
     state.isLoggedIn = true;
     state.user = user;
     TokenStorage.setRefreshTokenExpiresIn(Date.now() + 1209600000); // время жизни токена в мс
-  },
-  loginFailure(state) {
-    state.isLoggedIn = false;
-    state.user = null;
   },
   logout(state) {
     state.isLoggedIn = false;
@@ -80,12 +76,14 @@ const mutations = {
   setUser(state, user) {
     state.user = user;
   },
-  /*registerSuccess(state) {
-    state.isLoggedIn = false;
+  registerSuccess(state, user) {
+    state.isLoggedIn = true;
+    state.user = user;
   },
-  registerFailure(state) {
+  failure(state) {
     state.isLoggedIn = false;
-  },*/
+    state.user = null;
+  },
 };
 
 export default {

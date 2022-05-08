@@ -4,6 +4,7 @@ import { postJSON, API, logOut } from "./http";
 
 class AuthService {
   login(user) {
+    console.log(user);
     return postJSON(API.auth, {
       login: user.login,
       password: user.password,
@@ -31,6 +32,10 @@ class AuthService {
       login: user.login,
       password: user.password,
       email: user.email,
+    }).then((res) => {
+      if (res) {
+        return this.login({ login: user.login, password: user.password });
+      }
     });
   }
 }

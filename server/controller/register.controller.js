@@ -5,11 +5,10 @@ const UserRolesTableExplorer = require("../utils/db_interection/UserRolesTableEx
 const UserController = require("./user.controller");
 
 const handleNewUser = async (req, res) => {
-  const { name, surname, login, password, email } = req.body[0];
+  const { name, surname, login, password, email } = req.body;
   if (!name || !login || !password || !email) {
     return res.status(400).json({
-      message:
-        "Имя пользователя, логин, пароль и  email являются обязательными",
+      message: "Имя пользователя, логин, пароль и email являются обязательными",
     });
   }
   // проверить наличие дублирования логина пользователя в бд
