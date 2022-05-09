@@ -1,14 +1,44 @@
 <template>
-  <form class="form" @click.prevent>
-    <h1 class="form_name">Войти</h1>
-    <div class="form_field">
-      <label for="login">Логин</label>
-      <input id="login" v-model="user.login" />
-      <label for="password">Пароль</label>
-      <input id="password" v-model="user.password" />
+  <div class="flex-wrapper-sign flex-layout-sign">
+    <h1 class="font-regular text-main-dark text-4xl">Авторизация</h1>
+    <form
+      class="flex-wrapper-sign form-shape-sign form-layout-sign"
+      @click.prevent
+    >
+      <div class="flex-wrapper-sign w-full">
+        <label class="text-lg mb-3 w-10/12" for="login"
+          >Логин
+          <input
+            class="w-full mt-1 py-1 px-4"
+            id="login"
+            v-model="user.login"
+          />
+        </label>
+        <label class="text-lg mb-6 w-10/12" for="password"
+          >Пароль
+          <input
+            class="w-full mt-1 py-1 px-4"
+            id="password"
+            v-model="user.password"
+          />
+        </label>
+      </div>
+      <button
+        class="bg-blue-400 button-shape-sign text-lg"
+        @click="handleLogin"
+      >
+        Войти
+      </button>
+    </form>
+    <div class="mt-10 border-2 rounded-md border-blueGray-400 px-4 py-5">
+      <span
+        >Новый пользователь?
+        <NuxtLink class="text-blue-400" to="/sign/up"
+          >Можете создать аккаунт.</NuxtLink
+        ></span
+      >
     </div>
-    <button @click="handleLogin">Войти</button>
-  </form>
+  </div>
 </template>
 
 <script>
@@ -40,3 +70,25 @@ export default {
   },
 };
 </script>
+
+<style>
+.flex-wrapper-sign {
+  @apply flex-1 flex flex-col items-center;
+}
+
+.flex-layout-sign {
+  @apply mt-20;
+}
+
+.form-layout-sign {
+  @apply w-96 mt-6 py-6;
+}
+
+.form-shape-sign {
+  @apply rounded-md bg-blueGray-100 shadow-lg;
+}
+
+.button-shape-sign {
+  @apply py-2 px-6 rounded-lg w-10/12;
+}
+</style>

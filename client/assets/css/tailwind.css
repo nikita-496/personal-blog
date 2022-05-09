@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  html {
+    font-family: "Ubuntu", "Segoe UI", "Arial", "sans-serif"
+  }
+  input {
+    @apply rounded focus:outline-none focus:ring ring-blue-600 ring-offset-0;
+  }
+}
