@@ -71,24 +71,4 @@ export default {
 };
 </script>
 
-<style>
-.flex-wrapper-sign {
-  @apply flex-1 flex flex-col items-center;
-}
-
-.flex-layout-sign {
-  @apply mt-20;
-}
-
-.form-layout-sign {
-  @apply w-96 mt-6 py-6;
-}
-
-.form-shape-sign {
-  @apply rounded-md bg-blueGray-100 shadow-lg;
-}
-
-.button-shape-sign {
-  @apply py-2 px-6 rounded-lg w-10/12;
-}
-</style>
+<style></style>

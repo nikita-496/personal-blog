@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,5 +10,34 @@
   }
   input {
     @apply rounded focus:outline-none focus:ring ring-blue-600 ring-offset-0;
+  }
+
+  .flex-wrapper-sign {
+    @apply flex-1 flex flex-col items-center;
+  }
+  
+  .flex-layout-sign {
+    @apply mt-20;
+  }
+  
+  .form-layout-sign {
+    @apply w-96 mt-6 py-6;
+  }
+  
+  .form-shape-sign {
+    @apply rounded-md bg-blueGray-100 shadow-lg;
+  }
+  
+  .button-shape-sign {
+    @apply py-2 px-6 text-main-dark rounded-lg w-10/12;
+  }
+}
+
+
+@layer components {
+  .sidebar-icon {
+    @apply w-8 mt-2 mb-2 mx-auto w-8 h-8
+           fill-current text-main-dark 
+    ;
   }
 }

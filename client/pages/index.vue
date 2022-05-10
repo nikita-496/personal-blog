@@ -1,5 +1,6 @@
 <template>
-  <Tutorial :users="users" />
+  <!-- <Tutorial :users="users" />-->
+  <div></div>
 </template>
 
 <script>
