@@ -1,6 +1,7 @@
 function paginatedResults(model) {
   return (req, res, next) => {
     const results = {};
+    results.total = model.length;
 
     if (!req.query.page && !req.query.limit) {
       results.results = model;
