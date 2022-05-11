@@ -1,18 +1,27 @@
 <template>
   <div>
     <header class="flex justify-end pt-8">
-      <div class="mr-40 w-64">
+      <div class="mr-60 w-68">
         <NuxtLink
-          class="px-4 py-3 mr-2 button-shape-sign text-lg bg-blue-300 text-main-dark"
+          class="px-4 py-3.5 mr-2 button-shape-sign text-md font-medium bg-blue-300 text-main-dark hover:opacity-75"
           to="/sign/up"
-          >Присоединиться</NuxtLink
+          >ПРИСОЕДИНИТЬСЯ</NuxtLink
         >
-        <span class="border-2 rounded border-main-dark py-3" v-if="loggedIn">
-          <NuxtLink href="/" @click="logout">Выйти</NuxtLink>
-        </span>
-        <span class="border-2 rounded-md border-main-dark px-2 py-3" v-else>
-          <NuxtLink to="/sign/in">Войти</NuxtLink>
-        </span>
+
+        <NuxtLink
+          class="border-2 rounded border-main-dark py-3 hover:text-main-lighthover:bg-main-dark"
+          v-if="loggedIn"
+          href="/"
+          @click="logout"
+          >Выйти</NuxtLink
+        >
+
+        <NuxtLink
+          class="border-2 rounded-md border-main-dark px-3 py-3 hover:text-main-light hover:bg-main-dark"
+          v-else
+          to="/sign/in"
+          >Войти</NuxtLink
+        >
       </div>
     </header>
     <nav-bar />

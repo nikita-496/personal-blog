@@ -16,7 +16,6 @@ module.exports = {
       blueGray: {
         400: "#94A3B8",
       },
-      icon: "#ffd0a1",
     },
     extend: {
       backgroundColor: (theme) => ({
@@ -31,6 +30,13 @@ module.exports = {
     },
   },
   variants: {
+    backgroundColor: [
+      "responsive",
+      "group-hover",
+      "focus-within",
+      "hover",
+      "focus",
+    ],
     extend: {},
   },
   plugins: [],
