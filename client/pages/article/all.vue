@@ -1,10 +1,37 @@
 <template>
-  <ul class="articles">
-    <li class="articles__item" v-for="article in articles" :key="article.id">
-      <div class="card">
-        <div class="card__title" v-html="article.title"></div>
-        <div class="card__content" v-html="article.content"></div>
+  <ul
+    class="grid grid-rows-12 sm:grid-rows-6 lg:grid-rows-4 grid-flow-col gap-x-6 gap-y-6"
+  >
+    <li class="w-72 rounded-md" v-for="article in articles" :key="article.id">
+      <div>
+        <img
+          class="rounded-md h-48 w-full"
+          src="../../assets/img/mountains.jpg"
+          alt="Горы"
+        />
+        <div class="text-xl font-bold pt-4" v-html="article.title"></div>
+        <div class="py-4 text-main-dark">
+          <span class="font-bold">
+            Аннотация.
+            <span class="font-normal">
+              Аннотация - краткое точное изложение содержания статьи, включающее
+              основные фактические сведения и выводы описываемой работы. Цель
+              аннотации – дать читателю представление о содержании статьи без
+              ознакомления с полным текстом.
+            </span>
+          </span>
+        </div>
+        <div class="pb-4 font-raleway font-medium text-blueGray-400">
+          <span
+            class="after:content-['●'] after:px-4 after:text-base after:text-gray-300"
+          >
+            20 июл, 2021</span
+          >
+          <span>JavaScript</span>
+          <span>Функциональное программирование</span>
+        </div>
         <nuxt-link
+          class="text-blue-800 font-medium hover:opacity-75"
           :to="{ path: `${article.id}`, params: { articleId: article.id } }"
           >Читать</nuxt-link
         >
@@ -24,7 +51,10 @@ export default {
   async asyncData() {
     let articles;
     try {
-      await getJSON(API.post).then((res) => (articles = res.data));
+      await getJSON(`${API.post}?page=1&limit=12`).then(
+        (res) => (articles = res.data.results)
+      );
+
       return { articles };
     } catch (err) {
       console.error(err);

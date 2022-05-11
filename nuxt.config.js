@@ -31,7 +31,7 @@ export default {
     link: [
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Raleway:wght@200&family=Ubuntu:wght@400;500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Raleway:wght@400&family=Ubuntu:wght@400;500&display=swap",
       },
     ],
   },

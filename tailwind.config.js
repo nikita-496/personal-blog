@@ -1,13 +1,16 @@
 const colors = require("tailwindcss/colors");
 const fontFamily = require("./tailwind-custom/fontFamily");
-const scale = require("./tailwind-custom/scale");
 
 module.exports = {
   mode: "jit",
-  purge: ["./public/**/*.html", "./client/**/*.{js,jsx,ts,tsx,vue}"],
+  purge: ["./client/**/*.{js,vue}"],
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontFamily,
+    screens: {
+      sm: "720px",
+      lg: "1099px",
+    },
     colors: {
       main: {
         light: "#ffff",
@@ -26,6 +29,9 @@ module.exports = {
         blue: colors.blue,
         sky: colors.sky,
         gray: colors.gray,
+      },
+      gridTemplateRows: {
+        12: "repeat(12, minmax(0, 1fr))",
       },
     },
   },

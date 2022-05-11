@@ -7,7 +7,6 @@
           to="/sign/up"
           >ПРИСОЕДИНИТЬСЯ</NuxtLink
         >
-
         <NuxtLink
           class="border-2 rounded border-main-dark py-3 hover:text-main-lighthover:bg-main-dark"
           v-if="loggedIn"
@@ -26,7 +25,9 @@
     </header>
     <nav-bar />
     <main>
-      <Nuxt />
+      <div class="wrapper-main flex justify-center ml-20 my-40">
+        <Nuxt />
+      </div>
     </main>
   </div>
 </template>

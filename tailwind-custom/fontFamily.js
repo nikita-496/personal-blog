@@ -1,5 +1,6 @@
 const fontFamily = {
-  title: ["Ubuntu", "Segoe UI", "Arial", "sans-serif"],
+  ubuntu: ["Ubuntu", "Segoe UI", "Arial", "sans-serif"],
+  raleway: ["Raleway", "Arial", "sans-serif"],
 };
 
 module.exports = fontFamily;
