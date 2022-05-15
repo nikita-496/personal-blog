@@ -120,7 +120,6 @@ export default {
     },
 
     scrolltrigger(visibleSection) {
-      //console.log(cache.wasAbove);
       let scrollDistance = 0;
       scrollDistance = this.determineScrollDistance();
       if (scrollDistance === 0) return;
@@ -147,39 +146,39 @@ export default {
       return scollDistance;
     },
 
+    calculateStep() {
+      this.activeSection = cache.clickedSection;
+      cache.step--;
+      if (cache.step === 0) {
+        cache.step = -1;
+        cache.isClicked = false;
+      }
+    },
+
     scrollToDown(visibleSectionName) {
-      /*if (cache.isClicked) {
-        console.log(cache.clickedSection);
-
-        this.activeSection = cache.clickedSection;
-        cache.step--;
-        if (cache.step === 0) {
-          cache.step = -1;
-          cache.isClicked = false;
-        }
-        console.log("down", cache.step, cache.isClicked);*/
-
-      this.activeSection = visibleSectionName;
+      if (cache.isClicked) {
+        this.calculateStep();
+      } else if (cache.step === -1 && !cache.isClicked) {
+        this.activeSection = visibleSectionName;
+      }
     },
 
     scrollToUp(visibleSectionName) {
-      /* if (cache.isClicked) {
-        this.activeSection = cache.clickedSection;
-        if (cache.step === 0) {
-          cache.step = -1;
-          cache.isClicked = false;
-        }*/
-
-      const sectionListName = this.sectionList.map(
-        (section) => section.innerText
-      );
-      const currentSectionIndex = sectionListName.indexOf(visibleSectionName);
-      this.activeSection = sectionListName[currentSectionIndex - 1];
+      if (cache.isClicked) {
+        this.calculateStep();
+      } else if (cache.step === -1 && !cache.isClicked) {
+        const sectionListName = this.sectionList.map(
+          (section) => section.innerText
+        );
+        const currentSectionIndex = sectionListName.indexOf(visibleSectionName);
+        this.activeSection = sectionListName[currentSectionIndex - 1];
+      }
     },
-    changeActiveSection(val) {
-      /* cache.activeSectionBeforeClicked = this.activeSection;
-      cache.isClicked = val.isClicked;
-      cache.clickedSection = val.activeSection;
+
+    changeActiveSection(clickData) {
+      cache.activeSectionBeforeClicked = this.activeSection;
+      cache.isClicked = clickData.isClicked;
+      cache.clickedSection = clickData.activeSection;
 
       const sectionListName = this.sectionList.map(
         (section) => section.innerText
@@ -192,7 +191,7 @@ export default {
         cache.step = clicedSectionIndex - beforeSectionIndex;
       } else {
         cache.step = beforeSectionIndex - clicedSectionIndex;
-      }*/
+      }
     },
   },
 };
