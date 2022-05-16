@@ -1,7 +1,7 @@
 <template>
-  <div class="sidebar">
-    <nav id="nav">
-      <ul class="flex flex-col items-center mt-36">
+  <div>
+    <nav v-if="type === 'menu'" class="nav">
+      <ul v-if="type === 'menu'" class="flex flex-col items-center mt-36">
         <li class="mb-6">
           <NuxtLink class="flex flex-col items-center" to="/">
             <div class="wrapper-icon">
@@ -360,6 +360,92 @@
         </li>
       </ul>
     </nav>
+    <nav v-else-if="type === 'article-section'" class="nav-article">
+      <ul class="flex flex-col">
+        <li>
+          <a
+            class="anchor-links mx-auto"
+            :class="activeSection === 'Аннотация' ? 'anchor-links_active' : ''"
+            :style="{ writingMode: 'vertical-rl' }"
+            @click="setActive(1)"
+            href="#"
+            v-scroll-to="'#one'"
+            ref="anchor-1"
+            >Аннотация</a
+          >
+        </li>
+
+        <li>
+          <a
+            class="anchor-links"
+            :class="activeSection === 'Раздел #1' ? 'anchor-links_active' : ''"
+            :style="{ writingMode: 'vertical-rl' }"
+            @click="setActive(2)"
+            href="#"
+            v-scroll-to="'#two'"
+            ref="anchor-2"
+            >Раздел #1</a
+          >
+        </li>
+
+        <li>
+          <a
+            class="anchor-links"
+            :class="activeSection === 'Раздел #2' ? 'anchor-links_active' : ''"
+            :style="{ writingMode: 'vertical-rl' }"
+            @click="setActive(3)"
+            href="#"
+            v-scroll-to="'#three'"
+            ref="anchor-3"
+            >Раздел #2</a
+          >
+        </li>
+        <li>
+          <a
+            class="anchor-links"
+            :class="activeSection === 'Раздел #3' ? 'anchor-links_active' : ''"
+            :style="{ writingMode: 'vertical-rl' }"
+            @click="setActive(4)"
+            href="#"
+            v-scroll-to="'#four'"
+            ref="anchor-4"
+            >Раздел #3</a
+          >
+        </li>
+        <li>
+          <a
+            class="anchor-links"
+            :class="activeSection === 'Раздел #4' ? 'anchor-links_active' : ''"
+            :style="{ writingMode: 'vertical-rl' }"
+            @click="setActive(5)"
+            href="#"
+            v-scroll-to="'#five'"
+            ref="anchor-5"
+            >Раздел #4</a
+          >
+        </li>
+        <li>
+          <a
+            class="anchor-links"
+            :class="activeSection === 'Вывод' ? 'anchor-links_active' : ''"
+            :style="{ writingMode: 'vertical-rl' }"
+            @click="setActive(6)"
+            href="#"
+            v-scroll-to="'#six'"
+            ref="anchor-6"
+            >Вывод</a
+          >
+        </li>
+      </ul>
+    </nav>
+    <nav v-else-if="type === 'article-title'" class="nav-article">
+      <a
+        class="rotate-180 anchor-links"
+        :style="{ writingMode: 'vertical-rl' }"
+        href="#"
+        >{{ innerHeaderText }}
+      </a>
+    </nav>
   </div>
 </template>
 
@@ -367,15 +453,30 @@
 import { mapActions } from "vuex";
 export default {
   name: "nav-bar",
+  props: {
+    type: { type: String, required: true },
+    activeSection: { type: String },
+    title: { type: String },
+  },
   computed: {
     loggedIn() {
       return this.$store.state.auth.isLoggedIn;
+    },
+    innerHeaderText() {
+      let result = "";
+      return (result = this.title.replace(/<[^>]+>/g, ""));
     },
   },
   methods: {
     ...mapActions({
       logoutAction: "auth/logout",
     }),
+    setActive(indexAnchor) {
+      this.$emit("setActive", {
+        activeSection: this.$refs[`anchor-${indexAnchor}`].textContent,
+        isClicked: true,
+      });
+    },
     logout() {
       this.logoutAction();
     },
@@ -384,9 +485,19 @@ export default {
 </script>
 
 <style>
-.sidebar {
-  @apply fixed top-0 left-0 h-screen m-0 
+.nav {
+  @apply fixed top-0 left-0 h-screen m-0
         bg-main-dark shadow-lg w-20 z-50;
+}
+.nav-article {
+  @apply sticky top-14;
+}
+.anchor-links {
+  @apply rotate-180 uppercase text-main-dark text-[1.05rem] font-raleway font-medium
+  my-1.5 hover:text-blueGray-400;
+}
+.anchor-links_active {
+  @apply font-bold hover:text-main-dark;
 }
 .wrapper-icon {
   @apply bg-blueGray-100 px-1 w-12 h-12

@@ -10,7 +10,7 @@
         <NuxtLink
           class="border-2 rounded border-main-dark py-3 hover:text-main-lighthover:bg-main-dark"
           v-if="loggedIn"
-          href="/"
+          to="/"
           @click="logout"
           >Выйти</NuxtLink
         >
@@ -23,9 +23,9 @@
         >
       </div>
     </header>
-    <nav-bar />
+    <nav-bar type="menu" />
     <main>
-      <div class="wrapper-main flex justify-center ml-20 my-40">
+      <div class="wrapper-main container mx-auto my-24">
         <Nuxt />
       </div>
     </main>
