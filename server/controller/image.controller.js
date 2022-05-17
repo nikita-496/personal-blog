@@ -1,26 +1,15 @@
-const db = require("../db/db");
+const ImageController = require("../utils/db_interection/Image.controller");
+const defineImageCategory = require("../utils/defineImageCategory");
 
-class ImageController {
-  async createImage(req, res) {
-    console.log(req.body);
-    const { url } = req.body;
-    const newImage = await db.query(
-      "INSERT INTO images (url) values($1) RETURNING *",
-      [url]
-    );
+const handleImage = (req, res) => {
+  const imageInfo = defineImageCategory(req.files);
+  ImageController.createImage(imageInfo.path).then(
+    (response) => {
+      res.status(201).json(response);
+      return response;
+    },
+    (err) => res.status(500).json({ message: err.message })
+  );
+};
 
-    console.log(newImage.rows[0]);
-    res.json(newImage.rows[0]);
-  }
-  async getImage(req, res) {
-    const users = await db.query("SELECT * FROM images");
-    res.json(users.rows);
-  }
-  async deleteImage(req, res) {
-    const id = req.params.id;
-    const image = await db.query("DELETE FROM images WHERE id = $1", [id]);
-    res.json(image.rows[0]);
-  }
-}
-
-module.exports = new ImageController();
+module.exports = handleImage;

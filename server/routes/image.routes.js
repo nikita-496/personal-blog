@@ -1,7 +1,9 @@
 const router = require("express").Router();
-const ImageController = require("../controller/image.controller");
+const ImageController = require("../utils/db_interection/Image.controller");
 const multer = require("multer");
 const verifyFile = require("../middleware/verifyFile");
+const defineImageCategory = require("../utils/defineImageCategory");
+const handleImage = require("../controller/image.controller");
 const upload = multer({ dest: "uploads/" });
 
 router
@@ -14,8 +16,7 @@ router
     ]),
     verifyFile,
     (req, res) => {
-      console.log(req.files.path);
-      ImageController.createImage(req.files.path);
+      handleImage(req, res);
     }
   )
   .get(ImageController.getImage);

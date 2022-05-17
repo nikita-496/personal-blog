@@ -1,15 +1,9 @@
 const fs = require("fs");
+const defineImageCategory = require("../utils/defineImageCategory");
 const fsPromises = require("fs").promises;
 
 const verifyFile = (req, res, next) => {
-  const file = req.files ?? avatar ?? ["article-header"] ?? ["article-body"];
-
-  let fileInfo;
-  file["avatar"]
-    ? (fileInfo = file["avatar"][0])
-    : file["article-header"]
-    ? (fileInfo = file["article-header"][0])
-    : (fileInfo = file["article-body"][0]);
+  const fileInfo = defineImageCategory(req.files);
 
   const fileName = fileInfo.originalname;
   const fileExtension = fileName.split(".")[1];
@@ -30,6 +24,7 @@ const verifyFile = (req, res, next) => {
   });
 
   async function createDir(dir) {
+    console.log(1);
     try {
       await fsPromises.access(dir, fs.constants.F_OK);
     } catch (e) {
@@ -37,7 +32,8 @@ const verifyFile = (req, res, next) => {
     }
   }
 
-  createDir(`uploads/${fileInfo.fieldname}`).then(() =>
+  createDir(`uploads/${fileInfo.fieldname}`).then(() => {
+    console.log(2);
     fs.rename(
       fileInfo.path,
       `uploads/${fileInfo.fieldname}/${fileInfo.filename}`,
@@ -45,11 +41,11 @@ const verifyFile = (req, res, next) => {
         if (err) throw err; // не удалось переместить файл
         req.files[
           fileInfo.fieldname
-        ][0].path = `uploads/${fileInfo.fieldname}/${fileInfo.filename}`;
+        ][0].path = `/uploads/${fileInfo.fieldname}/${fileInfo.filename}`;
         next();
       }
-    )
-  );
+    );
+  });
 };
 
 module.exports = verifyFile;
