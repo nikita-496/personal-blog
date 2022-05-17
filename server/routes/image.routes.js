@@ -1,9 +1,8 @@
 const router = require("express").Router();
-const ImageController = require("../utils/db_interection/Image.controller");
+const ImageExplorer = require("../utils/db_interection/ImageTabelExplorer");
 const multer = require("multer");
 const verifyFile = require("../middleware/verifyFile");
-const defineImageCategory = require("../utils/defineImageCategory");
-const handleImage = require("../controller/image.controller");
+const ImageController = require("../controller/image.controller");
 const upload = multer({ dest: "uploads/" });
 
 router
@@ -16,11 +15,11 @@ router
     ]),
     verifyFile,
     (req, res) => {
-      handleImage(req, res);
+      ImageController.handleImage(req, res);
     }
   )
-  .get(ImageController.getImage);
+  .get(ImageExplorer.getImage);
 
-router.route("/:id").delete(ImageController.deleteImage);
+router.route("/:id").delete(ImageExplorer.deleteImage);
 
 module.exports = router;

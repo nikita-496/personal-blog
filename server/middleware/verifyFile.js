@@ -24,7 +24,6 @@ const verifyFile = (req, res, next) => {
   });
 
   async function createDir(dir) {
-    console.log(1);
     try {
       await fsPromises.access(dir, fs.constants.F_OK);
     } catch (e) {
@@ -33,7 +32,6 @@ const verifyFile = (req, res, next) => {
   }
 
   createDir(`uploads/${fileInfo.fieldname}`).then(() => {
-    console.log(2);
     fs.rename(
       fileInfo.path,
       `uploads/${fileInfo.fieldname}/${fileInfo.filename}`,

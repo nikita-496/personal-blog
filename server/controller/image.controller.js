@@ -1,9 +1,9 @@
-const ImageController = require("../utils/db_interection/Image.controller");
+const ImageExplorer = require("../utils/db_interection/ImageTabelExplorer");
 const defineImageCategory = require("../utils/defineImageCategory");
 
 const handleImage = (req, res) => {
   const imageInfo = defineImageCategory(req.files);
-  ImageController.createImage(imageInfo.path).then(
+  ImageExplorer.createImage(imageInfo.path).then(
     (response) => {
       res.status(201).json(response);
       return response;
@@ -12,4 +12,4 @@ const handleImage = (req, res) => {
   );
 };
 
-module.exports = handleImage;
+module.exports = { handleImage };

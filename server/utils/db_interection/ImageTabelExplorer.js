@@ -1,6 +1,6 @@
 const db = require("../../db/db");
 
-class ImageController {
+class ImageTableExplorer {
   async createImage(url) {
     console.log(url);
     const newImage = await db.query(
@@ -22,4 +22,4 @@ class ImageController {
   }
 }
 
-module.exports = new ImageController();
+module.exports = new ImageTableExplorer();
