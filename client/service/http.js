@@ -24,6 +24,7 @@ export const api = {
 
   user: url("/user/"),
   post: url("/post"),
+  image: url("/image"),
 };
 
 const instance = axios.create(axiosConfig);
@@ -44,12 +45,12 @@ export function getJSON(url, config) {
 export function logOut(url) {
   return new GetJSON().get(url);
 }
-//export const getJSON = async (url) => await instance.get(url);
-
-//export const logout = async (url) => await instance.get(url);
 
 export const postJSON = async (url, data, config) =>
   await instance.post(url, data ? JSON.stringify(data) : null, config);
+
+export const postFormData = async (url, data, config) =>
+  await instance.post(url, data ? data : null, config);
 
 export const postRefreshToken = async (url, data) =>
   await axios.post(url, data ? JSON.stringify(data) : null, {

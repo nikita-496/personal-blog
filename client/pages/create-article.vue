@@ -2,10 +2,19 @@
   <div>
     <client-only>
       <label for="title">Заголовок</label>
-      <VueEditor id="body" v-model="title" />
-      <label for="title">Текст статьи</label>
-      <VueEditor id="body" v-model="content" />
-      <button @click="publick">Публиковать</button>
+      <VueEditor class="mx-auto w-[60rem]" id="title" v-model="title" />
+
+      <label for="content">Текст статьи</label>
+      <VueEditor
+        class="mx-auto w-[60rem]"
+        id="content"
+        ref="articleBody"
+        v-model="content"
+        useCustomImageHandler
+        @image-added="handleImageAdded"
+      />
+
+      <button @click="send">Публиковать</button>
     </client-only>
   </div>
 </template>
@@ -49,14 +58,30 @@ export default {
       checkAuthUser: "auth/checkAuthUser",
       setUser: "auth/setUser",
     }),
-    publick() {
+    handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+      const formData = new FormData();
+      formData.append("article-body", file);
+      const handlerPost = new PostBlogService();
+      handlerPost
+        .loadImage(formData)
+        .then((res) => {
+          const url = res.data.url;
+          Editor.insertEmbed(cursorLocation, "image", url);
+          resetUploader();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    send() {
       const sendArticle = {
         user_id: UserStorage.getUser().id,
         title: this.title,
         content: this.content,
       };
-      const handler = new PostBlogService();
-      handler.send(sendArticle);
+      console.log(this.content);
+      /*const handler = new PostBlogService();
+      handler.send(sendArticle);*/
     },
   },
 };
