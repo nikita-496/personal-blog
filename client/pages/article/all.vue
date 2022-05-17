@@ -40,7 +40,7 @@
       </li>
     </ul>
     <pagination
-      :totalPages="Math.floor(pagination.totalPages / 12)"
+      :totalPages="Math.ceil(pagination.totalPages / 12)"
       :currentPage="pagination.currentPage"
       @updatePage="changePage"
     />
@@ -79,7 +79,11 @@ export default {
         (res) => {
           this.articles = res.data.results;
           this.pagination.totalPages = res.data.total;
-          this.pagination.currentPage = res.data.next.page - 1;
+          if (!res.data.next) {
+            this.pagination.currentPage = res.data.previous.page + 1;
+          } else {
+            this.pagination.currentPage = res.data.next.page - 1;
+          }
         }
       );
     },

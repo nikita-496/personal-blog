@@ -44,7 +44,6 @@ export default {
   },
   methods: {
     sendNumberPage(clickedPage) {
-      console.log(clickedPage);
       this.$emit("updatePage", clickedPage);
     },
   },
