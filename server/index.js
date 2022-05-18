@@ -3,10 +3,13 @@ const app = express();
 
 const dotenv = require("dotenv");
 dotenv.config();
+
+const path = require("path");
+
 const cors = require("cors");
 const credentials = require("./middleware/credentials");
 const corsOptions = require("./config/corsOptions");
-const verifyJWT = require("./middleware/verifyJWT");
+
 const cookieParser = require("cookie-parser");
 
 app.use(express.json());
@@ -21,6 +24,7 @@ app.use(cors(corsOptions));
 //middleware for cookie
 app.use(cookieParser());
 
+app.use(express.static(path.join(__dirname, "static")));
 //routes
 app.use("/api/v1/register", require("./routes/register.routes"));
 app.use("/api/v1/auth", require("./routes/auth.routes"));

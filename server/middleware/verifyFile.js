@@ -2,6 +2,8 @@ const fs = require("fs");
 const defineImageCategory = require("../utils/defineImageCategory");
 const fsPromises = require("fs").promises;
 
+require("dotenv").config();
+
 const verifyFile = (req, res, next) => {
   const fileInfo = defineImageCategory(req.files);
 
@@ -31,15 +33,15 @@ const verifyFile = (req, res, next) => {
     }
   }
 
-  createDir(`uploads/${fileInfo.fieldname}`).then(() => {
+  createDir(`${process.env.STATIC_PATH}/${fileInfo.fieldname}`).then(() => {
     fs.rename(
       fileInfo.path,
-      `uploads/${fileInfo.fieldname}/${fileInfo.filename}`,
+      `${process.env.STATIC_PATH}/${fileInfo.fieldname}/${fileInfo.filename}`,
       (err) => {
         if (err) throw err; // не удалось переместить файл
         req.files[
           fileInfo.fieldname
-        ][0].path = `/uploads/${fileInfo.fieldname}/${fileInfo.filename}`;
+        ][0].path = `${process.env.STATIC_PATH}/${fileInfo.fieldname}/${fileInfo.filename}`;
         next();
       }
     );
