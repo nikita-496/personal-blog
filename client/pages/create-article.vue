@@ -9,9 +9,9 @@
         class="mx-auto w-[60rem]"
         id="content"
         ref="articleBody"
-        v-model="content"
         useCustomImageHandler
-        @image-added="handleImageAdded"
+        @image-added="wrapper"
+        v-model="content"
       />
 
       <button @click="send">Публиковать</button>
@@ -21,9 +21,11 @@
 
 <script>
 import { mapActions } from "vuex";
-import PostBlogService from "../service/PostBlogService";
 import UserStorage from "../persistent/User";
 import UserService from "../service/user.service";
+import PostBlogService from "../service/PostBlogService";
+import previewSelectedFile from "../utils/previewSelectedFile";
+
 export default {
   data() {
     return {
@@ -58,20 +60,15 @@ export default {
       checkAuthUser: "auth/checkAuthUser",
       setUser: "auth/setUser",
     }),
-    handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+    wrapper(file, Editor, cursorLocation, resetUploader) {
+      const handle = this.handleImageAdded;
+      const wrapped = previewSelectedFile(handle);
+      wrapped(file, Editor, cursorLocation, resetUploader);
+    },
+    handleImageAdded(file) {
       const formData = new FormData();
       formData.append("article-body", file);
-      const handlerPost = new PostBlogService();
-      handlerPost
-        .loadImage(formData)
-        .then((res) => {
-          const url = res.data.url;
-          Editor.insertEmbed(cursorLocation, "image", url);
-          resetUploader();
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      return formData;
     },
     send() {
       const sendArticle = {
@@ -79,9 +76,8 @@ export default {
         title: this.title,
         content: this.content,
       };
-      console.log(this.content);
-      /*const handler = new PostBlogService();
-      handler.send(sendArticle);*/
+      const handler = new PostBlogService();
+      handler.send(sendArticle);
     },
   },
 };
