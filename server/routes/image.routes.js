@@ -3,12 +3,13 @@ const ImageExplorer = require("../utils/db_interection/ImageTabelExplorer");
 const multer = require("multer");
 const verifyFile = require("../middleware/verifyFile");
 const ImageController = require("../controller/image.controller");
-const upload = multer({ dest: "uploads/" });
+
+const static = multer({ dest: "../static" });
 
 router
   .route("/")
   .post(
-    upload.fields([
+    static.fields([
       { name: "avatar" },
       { name: "article-header" },
       { name: "article-body" },
