@@ -1,11 +1,12 @@
 const bcrypt = require("bcrypt");
 const PersonTableExplorer = require("../utils/db_interection/PersonTableExplorer");
 const ProfilTableExplorer = require("../utils/db_interection/ProfileTableExplorer");
+const RelationshipTableExplorer = require("../utils/db_interection/RelationshipExplorer");
 const UserRolesTableExplorer = require("../utils/db_interection/UserRolesTableExplorer");
 const UserController = require("./user.controller");
 
 const handleNewUser = async (req, res) => {
-  const { name, surname, login, password, email } = req.body;
+  const { name, surname, login, password, email } = req.body[0];
   if (!name || !login || !password || !email) {
     return res.status(400).json({
       message: "Имя пользователя, логин, пароль и email являются обязательными",
@@ -42,6 +43,10 @@ const handleNewUser = async (req, res) => {
       profileExplorer.id = userProfile.id;
       profileExplorer.foreignId = registeredUser.id;
       const personWithProfile = await profileExplorer.writeForeignId();
+      //Присвоить взаимоотношения с обществом (подписки, подписчики)
+      const relationshipExporer = new RelationshipTableExplorer();
+      relationshipExporer.userId = registeredUser.id;
+      relationshipExporer.createRelationship();
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
