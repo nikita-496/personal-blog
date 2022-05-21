@@ -1,7 +1,6 @@
 const RelationshipTableExplorer = require("../utils/db_interection/RelationshipExplorer");
 
 const handleRelationship = async (req, res) => {
-  console.log(req.body);
   const { following, followers, user_id } = req.body;
   const handler = new RelationshipTableExplorer();
   handler.userId = user_id;

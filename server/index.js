@@ -35,6 +35,7 @@ app.use("/api/v1/user", require("./routes/user.routes"));
 app.use("/api/v1/post", require("./routes/post.routes"));
 app.use("/api/v1/image", require("./routes/image.routes"));
 app.use("/api/v1/relationship", require("./routes/relationship.routes"));
+app.use("/api/v1/forum", require("./routes/forum.routes"));
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {

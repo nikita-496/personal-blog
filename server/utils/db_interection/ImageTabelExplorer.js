@@ -2,13 +2,10 @@ const db = require("../../db/db");
 
 class ImageTableExplorer {
   async createImage(url) {
-    console.log(url);
     const newImage = await db.query(
       "INSERT INTO images (url) values($1) RETURNING *",
       [url]
     );
-
-    console.log(newImage.rows[0]);
     return newImage.rows[0];
   }
   async getImage(req, res) {

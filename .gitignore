@@ -92,7 +92,8 @@ sw.*
 # Hide 
 package-lock.json
 logic.drawio
-uploads
+profile.drawio
+static
 client/store/README.md
 server/config/password.js
 server/db/db.sql
