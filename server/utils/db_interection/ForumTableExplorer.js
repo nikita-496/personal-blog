@@ -55,7 +55,6 @@ class ForumTableExplorer {
   }
 
   async deleteForum() {
-    console.log(this.id);
     const forum = await db.query("DELETE FROM forum WHERE id = $1", [this.id]);
     return forum.rows[0];
   }

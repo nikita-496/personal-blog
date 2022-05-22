@@ -29,6 +29,7 @@ const handleForum = async (req, res) => {
   async function update() {
     handler.id = id;
     handler.updateForum();
+    result = res.json(`Forum с id ${req.params.id} обновлен`);
   }
   async function remove() {
     handler.id = req.params.id;
