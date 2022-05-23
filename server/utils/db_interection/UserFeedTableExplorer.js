@@ -5,6 +5,7 @@ class UserFeedTableExplorer {
   _user_id = null;
   _idea = null;
   _forum_id = null;
+  _post_id = null;
 
   get id() {
     return this._id;
@@ -33,6 +34,14 @@ class UserFeedTableExplorer {
   set forumId(val) {
     return (this._forum_id = val);
   }
+
+  get postId() {
+    return this._post_id;
+  }
+  set postId(val) {
+    return (this._post_id = val);
+  }
+
   // При регитсрации нового пользователя
   // создается его лента с пустым содержимым
   async createFeed() {
@@ -49,10 +58,11 @@ class UserFeedTableExplorer {
     );
     const time = await db.query("SELECT LOCALTIMESTAMP(0) :: TIME");
     const updatedFeed = await db.query(
-      "UPDATE user_feed SET idea = $1, forum_id = $2, date = $3, time = $4 WHERE id = $5 RETURNING *",
+      "UPDATE user_feed SET idea = $1, forum_id = $2, post_id = $3, date = $4, time = $5 WHERE id = $6 RETURNING *",
       [
         this.idea,
         this.forumId,
+        this.postId,
         date.rows[0].to_char,
         time.rows[0].localtimestamp,
         this.id,
@@ -70,6 +80,17 @@ class UserFeedTableExplorer {
       [this.forumId]
     );
     return forum.rows[0];
+  }
+
+  async joinWithPost() {
+    const post = await db.query(
+      `SELECT post.title, post.user_id, post.tags, user_feed.date, user_feed.time
+    FROM post
+    INNER JOIN user_feed ON user_feed.post_id = post.id WHERE post.id = $1
+    `,
+      [this.postId]
+    );
+    return post.rows[0];
   }
 }
 

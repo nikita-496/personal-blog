@@ -31,6 +31,18 @@ class PostController {
     const post = await db.query("DELETE FROM post where id = $1", [id]);
     res.json(post.rows[0]);
   }
+
+  async joinWithPersonLogin(userId) {
+
+    const personLogin = await db.query(
+      `SELECT person.login
+      FROM person
+      INNER JOIN post ON post.user_id = person.id WHERE person.id = $1
+    `,
+    [userId]
+    );
+    return personLogin.rows[0];
+  }
 }
 
 module.exports = new PostController();
