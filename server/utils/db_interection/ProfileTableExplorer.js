@@ -20,7 +20,7 @@ class ProfileTableExplorer {
   async createProfile() {
     //Каждый зарегистрированный пользователь имеет свой профиль
     const profile = await db.query(
-      `INSERT INTO profile (avatar) values('1.jpg')`
+      `INSERT INTO profile (avatar) values('default')`
     );
   }
 
@@ -34,6 +34,20 @@ class ProfileTableExplorer {
       "UPDATE profile SET user_id = $1 WHERE id = $2 RETURNING *",
       [this.foreignId, this.id]
     );
+  }
+
+  async updateProfile(avatar) {
+    console.log(avatar, this.id)
+    await db.query("UPDATE profile SET avatar = $1 WHERE user_id = $2 RETURNING *", [
+      avatar,
+      this.id,
+    ]);
+  }
+
+  async deleteProfile(req, res) {
+    const id = req.params.id;
+    const post = await db.query("DELETE FROM profile where id = $1", [id]);
+    return res.json(post.rows[0]);
   }
 }
 

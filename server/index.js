@@ -31,6 +31,7 @@ app.use("/api/v1/auth", require("./routes/auth.routes"));
 app.use("/api/v1/refresh", require("./routes/refresh.routes"));
 app.use("/api/v1/logout", require("./routes/logout.routes"));
 app.use("/api/v1/user", require("./routes/user.routes"));
+app.use("/api/v1/profile", require("./routes/profile.routes"))
 
 app.use("/api/v1/post", require("./routes/post.routes"));
 app.use("/api/v1/image", require("./routes/image.routes"));
