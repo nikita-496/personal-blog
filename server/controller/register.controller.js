@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const PersonTableExplorer = require("../utils/db_interection/PersonTableExplorer");
 const ProfilTableExplorer = require("../utils/db_interection/ProfileTableExplorer");
 const RelationshipTableExplorer = require("../utils/db_interection/RelationshipExplorer");
+const UserFeedTableExplorer = require("../utils/db_interection/UserFeedTableExplorer");
 const UserRolesTableExplorer = require("../utils/db_interection/UserRolesTableExplorer");
 const UserController = require("./user.controller");
 
@@ -19,9 +20,9 @@ const handleNewUser = async (req, res) => {
     return res.sendStatus(409); //Conflict
   }
   try {
-    //шифрование пароля
+    // шифрование пароля
     const hashedPwd = await bcrypt.hash(password, 10);
-    //создание и запись нового пользователя
+    // создание и запись нового пользователя
     userCreation();
     async function userCreation() {
       const newUser = { name, surname, login, password: hashedPwd, email };
@@ -34,19 +35,23 @@ const handleNewUser = async (req, res) => {
       const userRolesExplorer = new UserRolesTableExplorer();
       const userProfileExplorer = new ProfilTableExplorer();
       userRolesExplorer.targetUserId = registeredUser.id;
-      //Присвоить роль
+      // Присвоить роль
       const userRole = await userRolesExplorer.createUserRole();
-      //Присвоить профиль
+      // Присвоить профиль
       await userProfileExplorer.createProfile();
       const userProfile = await userProfileExplorer.getLastProfile();
       const profileExplorer = new ProfilTableExplorer();
       profileExplorer.id = userProfile.id;
       profileExplorer.foreignId = registeredUser.id;
       const personWithProfile = await profileExplorer.writeForeignId();
-      //Присвоить взаимоотношения с обществом (подписки, подписчики)
-      const relationshipExporer = new RelationshipTableExplorer();
-      relationshipExporer.userId = registeredUser.id;
-      relationshipExporer.createRelationship();
+      // Присвоить взаимоотношения с обществом (подписки, подписчики)
+      const relationshipExplorer = new RelationshipTableExplorer();
+      relationshipExplorer.userId = registeredUser.id;
+      relationshipExplorer.createRelationship();
+      // Присвоить ленту
+      const feedExplorer = new UserFeedTableExplorer();
+      feedExplorer.userId = registeredUser.id;
+      feedExplorer.createFeed()
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
