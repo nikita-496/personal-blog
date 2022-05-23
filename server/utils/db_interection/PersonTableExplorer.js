@@ -60,7 +60,7 @@ class PersonTableExplorer {
     );
   }
 
-  async join() {
+  async joinWithProfile() {
     const profile = await db.query(
       `SELECT person.id, person.name, person.surname, person.login, person.email, profile.avatar
        FROM person 
@@ -68,6 +68,10 @@ class PersonTableExplorer {
       `,
       [this.loginForSelect]
     );
+    return profile;
+  }
+
+  async join() {
     const userRoles = await db.query(
       `SELECT user_roles.role_id
        FROM person 
@@ -75,8 +79,21 @@ class PersonTableExplorer {
       `,
       [this.loginForSelect]
     );
+    const profile = await this.joinWithProfile(this.loginForSelect);
     const roles = userRoles.rows.map((role) => role.role_id);
     return [{ ...profile.rows[0], roles }];
+  }
+
+  async joinWithComment() {
+    const comment = await db.query(
+      `SELECT comment.content, comment.post_id, comment.forum_id, comment.publication_date, comment.publication_time
+      FROM person
+      INNER JOIN comment ON comment.user_id = person.id WHERE login = $1        
+      `,
+      [this.loginForSelect]
+    );
+    const profile = await this.joinWithProfile(this.loginForSelect);
+    return { ...profile.rows[0], ...comment.rows[0] };
   }
 }
 
