@@ -1,15 +1,6 @@
 <template>
   <div>
-    <!--https://stackoverflow.com/questions/47862591/vuejs-error-the-client-side-rendered-virtual-dom-tree-is-not-matching-server-re-->
-    <client-only>
-      <h1>Login: {{ getLogin }}</h1>
-      <button
-        v-if="getRoles && getRoles.includes(2)"
-        @click="goCreateArticle()"
-      >
-        Создать статью
-      </button>
-    </client-only>
+    <profile />
   </div>
 </template>
 
@@ -17,21 +8,19 @@
 import UserStorage from "../../persistent/User";
 import { mapActions, mapGetters } from "vuex";
 export default {
-  mounted() {
+   mounted() {
     this.checkAuthUser();
-    //При обновлении страницы записывать в стор данные пользователяы
-    this.setUser(UserStorage.getUser().id);
+    this.setUserProfile(UserStorage.getUser().id);
   },
   computed: {
     ...mapGetters({
-      getLogin: "auth/getLogin",
-      getRoles: "auth/getRoles",
+      getRoles: "auth/getRoles"
     }),
   },
   methods: {
     ...mapActions({
       checkAuthUser: "auth/checkAuthUser",
-      setUser: "auth/setUser",
+      setUserProfile: "profile/setUserProfile",
     }),
     goCreateArticle() {
       this.$router.push("/create-article");

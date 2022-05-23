@@ -1,6 +1,5 @@
 import TokenStorage from "../persistent/Token";
 import AuthService from "../service/auth.service";
-import { API, getJSON } from "../service/http";
 
 const state = () => ({
   isLoggedIn: false,
@@ -9,11 +8,34 @@ const state = () => ({
 
 const getters = {
   getLoggedIn: (state) => state.isLoggedIn,
-  getLogin: (state) => {
+
+  getName: (state) => {
     if (state.user) {
-      return state.user.login;
+      return state.user.name
     }
   },
+  getSurname: (state) => {
+    if (state.user) {
+      return state.user.surname
+    }
+  },
+  getLogin: (state) => {
+    if (state.user) {
+      return state.user.login
+    }
+  },
+  getEmail: (state) => {
+    if (state.user) {
+      return state.user.email
+    }
+  },
+
+  getAvatar: (state) => {
+    if (state.user) {
+      return state.user.avatar
+    }
+  },
+
   getRoles: (state) => {
     if (state.user) {
       return state.user.roles;
@@ -42,10 +64,6 @@ const actions = {
     const accessToken = TokenStorage.getToken();
     commit("checkAuthUser", accessToken);
   },
-  async setUser({ commit }, userId) {
-    const user = await getJSON(API.user + userId);
-    commit("setUser", user.data[0]);
-  },
   register({ commit }, user) {
     return AuthService.register(user).then(
       (res) => {
@@ -72,9 +90,6 @@ const mutations = {
   },
   checkAuthUser(state, accessToken) {
     accessToken ? (state.isLoggedIn = true) : (state.isLoggedIn = false);
-  },
-  setUser(state, user) {
-    state.user = user;
   },
   registerSuccess(state, user) {
     state.isLoggedIn = true;
