@@ -58,6 +58,17 @@ class ForumTableExplorer {
     const forum = await db.query("DELETE FROM forum WHERE id = $1", [this.id]);
     return forum.rows[0];
   }
+
+  async joinWithPersonLogin() {
+    const personLogin = await db.query(
+      `SELECT person.login
+      FROM person
+      INNER JOIN forum ON forum.user_id = person.id WHERE person.id = $1
+    `,
+      [this.userId]
+    );
+    return personLogin.rows[0];
+  }
 }
 
 module.exports = ForumTableExplorer;
