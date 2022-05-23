@@ -2,6 +2,7 @@ const db = require("../../db/db");
 
 class ImageTableExplorer {
   _postId = null;
+  _userId = null;
   _typeImage = null;
 
   get postId() {
@@ -9,6 +10,13 @@ class ImageTableExplorer {
   }
   set postId(val) {
     return (this._postId = val);
+  }
+
+  get userId() {
+    return this._userId;
+  }
+  set userId(val) {
+    return (this._userId = val);
   }
 
   get typeImage() {
@@ -22,10 +30,11 @@ class ImageTableExplorer {
     let typeUrl;
     this.typeImage === "header"
       ? (typeUrl = "url_post_header")
+      : this.typeImage === "avatar" ? (typeUrl = "url_avatar")
       : (typeUrl = "url");
     const newImage = await db.query(
-      `INSERT INTO images (${typeUrl}, post_id) values($1, $2) RETURNING *`,
-      [url, this.postId]
+      `INSERT INTO images (${typeUrl}, post_id, user_id) values($1, $2, $3) RETURNING *`,
+      [url, this.postId, this.userId]
     );
     return newImage.rows[0];
   }
