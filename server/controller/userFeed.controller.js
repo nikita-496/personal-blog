@@ -18,14 +18,27 @@ const handleUserFeed = async (req, res) => {
   handler.forumId = forum_id;
   handler.postId = post_id;
 
-  method === "PUT" ? await update() : await get();
+  method ===  "PUT" ? await update() 
+  : method === "DELETE" ? await remove() 
+  : await get();
 
   return result;
+
+  async function get() {
+    handler.id = req.params.id;
+    return res.json(await handler.getFeed());
+  }
 
   async function update() {
     handler.id = id;
     await handler.updateFeed();
     forum_id ? await handleFollowedForum() : await handleCreatedPost();
+  }
+
+  async function remove() {
+    handler.id = req.params.id;
+    handler.deletefeed()
+    result = res.json(`Лента пользователя с id ${req.params.id} удалена`)
   }
 
   /* FORUM */

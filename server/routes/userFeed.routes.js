@@ -1,10 +1,11 @@
 const router = require("express").Router();
-const userFeedController = require("../controller/userFeed.controller")
+const userFeedController = require("../controller/userFeed.controller");
 
+router.route("/").put(userFeedController.handleUserFeed);
 
 router
-  .route("/")
-  .put(userFeedController.handleUserFeed);
-
+  .route("/:id")
+  .get(userFeedController.handleUserFeed)
+  .delete(userFeedController.handleUserFeed);
 
 module.exports = router;

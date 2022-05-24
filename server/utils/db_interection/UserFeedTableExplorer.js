@@ -52,6 +52,11 @@ class UserFeedTableExplorer {
     return newFeed;
   }
 
+  async getFeed() {
+    const feed = await db.query("SELECT * FROM user_feed WHERE id = $1", [this.id]);
+    return feed.rows[0];
+  }
+
   async updateFeed() {
     const date = await db.query(
       "SELECT TO_CHAR(NOW() :: DATE, 'Mon dd, yyyy')"
@@ -69,6 +74,11 @@ class UserFeedTableExplorer {
       ]
     );
     return updatedFeed.rows[0];
+  }
+
+  async deletefeed() {
+    const feed = await db.query("DELETE FROM user_feed WHERE id = $1", [this.id])
+    return feed.rows[0]
   }
 
   async joinWithForum() {
